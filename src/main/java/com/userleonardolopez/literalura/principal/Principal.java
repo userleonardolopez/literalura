@@ -101,6 +101,7 @@ public class Principal {
         busqueda = scanner.nextLine().trim().replace(" ", "+");
 
         json = ConsultadorApi.obtenerJson(URL_BASE + BUSCAR_POR_TITULO + busqueda);
+
         var libro = obtenerLibroApi(json);
 
         // Si se obtuvo un libro de la API, evaluará si lo persiste o no
@@ -111,7 +112,7 @@ public class Principal {
             if (autorExistente.isPresent()
                     && autorExistente.get().getNombreCompleto()
                     .equalsIgnoreCase(libro.getAutor().getNombreCompleto())) {
-
+// ****************************************************************************************
                 Optional<Libro> libroExistente = repositorioLibro
                         .findByTituloContainsIgnoreCase(libro.getTitulo());
 
@@ -119,14 +120,16 @@ public class Principal {
                         && libroExistente.get().getTitulo()
                         .equalsIgnoreCase(libro.getTitulo())) {
                     System.out.println("Este libro ya se encuentra registrado.");
-
+//*****************************************************************************************
                 } else {
                     libro.setAutor(autorExistente.get());
                     repositorioLibro.save(libro);
+                    System.out.println("¡Libro registrado con éxito!\n" + libro);
                 }
             } else {
                 repositorioAutor.save(libro.getAutor());
                 repositorioLibro.save(libro);
+                System.out.println("¡Libro registrado con éxito!\n" + libro);
             }
         }
     }
